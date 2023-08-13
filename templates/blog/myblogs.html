@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blogs</title>
     <style>
+                .image-container {
+    /* max-width: 100%; */
+    height: auto;
+        }
+
+        .blog-image {
+    /* max-width: 100%; */
+    width: auto;
+    height: auto;
+    display: block;
+    max-height: 200px; /* Adjust the desired height */
+        }
         body {
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
@@ -131,8 +143,11 @@
         <div class="blog-content">
             <p>{{ blog.blog_text }}</p>
             {% if blog.blog_image %}
-            <img src="{{ blog.blog_image.url }}" alt="">
+        <div class="image-container">
+            <img class="blog-image" src="{{ blog.blog_image.url }}" alt="">
             {% endif %}
+            </div>
+            
         </div>
         <div class="blog-actions">
             <a class="edit" href="{% url 'edit_blog' blog.id %}">Edit</a>

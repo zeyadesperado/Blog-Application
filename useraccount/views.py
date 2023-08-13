@@ -13,7 +13,6 @@ def logout_page(request):
 def home(request):
     return render(request, 'blog/home.html')
 
-
 def sign_up(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -35,7 +34,7 @@ def sign_up(request):
         else:
             return render(request, 'register/signup.html', {
                 'result': 'Not Valid Data',
-                'errors': str(form.errors),
+                # 'errors': str(form.errors),
             })
 
     return render(request, 'register/signup.html', {
@@ -43,6 +42,7 @@ def sign_up(request):
         'result': '',
     })
 
+@login_required 
 def login_page(request):
     template_data = {
         'result': '',

@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Blog</title>
     <style>
+        .image-container {
+    max-width: 100%;
+    height: auto;
+        }
+
+        .blog-image {
+    max-width: 100%;
+    height: auto;
+        }
+
+        
         body {
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
@@ -112,19 +123,24 @@
     </div>
     <div class="blogs-container">
         <div class="Edit">
-            <form method="post">
-              {% csrf_token %}
-              <h4>Author: {{ blog.author}}</h4>
-              <label for="blog_title">Blog Title</label>
-              <input type="text" name="blog_title" value="{{ blog.blog_title }}">
-              <label for="blog_text">Description</label>
-              <input type="text" name="blog_text" value="{{ blog.blog_text }}">
-              <label for="blog_image">Add Image</label>
-              <input type="file" name="blog_image">
-              <div class="sec-4">
-                  <button class="blue" type="submit">Save</button>
-              </div>
-          </form>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h4>Author: {{ blog.author }}</h4>
+                <label for="blog_title">Blog Title</label>
+                <input type="text" name="blog_title" value="{{ blog.blog_title }}">
+                <label for="blog_text">Description</label>
+                <input type="text" name="blog_text" value="{{ blog.blog_text }}">
+                {% if blog.blog_image %}
+                <div class="image-container">
+                <img src="{{ blog.blog_image.url }}" alt="Blog Image" class="blog-image">
+                </div>
+                {% endif %}
+                <div class="sec-4">
+                    <label for="blog_image">Add Image</label>
+                    <input type="file" name="blog_image">
+                    <button class="blue" type="submit">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>

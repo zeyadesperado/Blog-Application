@@ -43,24 +43,31 @@ def create_blog(request: HttpRequest):
     
 def edit_blog(request: HttpRequest, blog_id):
 
-    blog = get_object_or_404(Blog, id=blog_id)
+    if request.user.is_authenticated:
+        blog = get_object_or_404(Blog, id=blog_id)
 
-    if request.method == 'POST':
-        blog.blog_title = request.POST['blog_title']
-        blog.blog_text = request.POST['blog_text']
-        blog.blog_image = request.FILES.get('blog_image')
-        blog.save()
-        return redirect('blog_home')
+        if request.method == 'POST':
+            blog.blog_title = request.POST['blog_title']
+            blog.blog_text = request.POST['blog_text']
+            if 'blog_image' in request.FILES:
+                blog.blog_image = request.FILES.get('blog_image')
+            
+            blog.save()
+            return redirect('blog_home')
 
-    return render(request, 'blog/edit.html', {'blog': blog})
-
+        return render(request, 'blog/edit.html', {'blog': blog})
+    else:
+        return redirect(reverse('login'))
 
 def delete_blog(request: HttpRequest, blog_id):
-    
-    blog = get_object_or_404(Blog, id=blog_id)
-    
-    if request.method == 'POST':
-        blog.delete()
-        return redirect('myblogs')
-    
-    return render(request, 'blog/delete.html', {'blog': blog})
+
+    if request.user.is_authenticated:
+        blog = get_object_or_404(Blog, id=blog_id)
+        
+        if request.method == 'POST':
+            blog.delete()
+            return redirect('myblogs')
+        
+        return render(request, 'blog/delete.html', {'blog': blog})
+    else:
+        return redirect(reverse('login'))
